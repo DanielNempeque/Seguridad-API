@@ -1,7 +1,5 @@
 package co.edu.unisabana.controller;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unisabana.config.JwtTokenUtil;
 import co.edu.unisabana.model.JwtRequest;
 import co.edu.unisabana.model.JwtResponse;
+import co.edu.unisabana.model.UserDTO;
 import co.edu.unisabana.service.JwtUserDetailsService;
 
 
@@ -46,7 +45,12 @@ public class JwtAuthenticationController {
 
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
-
+	
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+		return ResponseEntity.ok(userDetailsService.save(user));
+	}
+	
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
