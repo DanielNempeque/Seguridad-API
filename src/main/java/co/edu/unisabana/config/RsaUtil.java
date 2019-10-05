@@ -24,19 +24,15 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 
 public class RsaUtil {	
-	/*public static void main(String[] args) throws Exception {
-		this.RsaUtil(plainText);
-		// Encryption
-		byte[] cipherTextArray = encrypt(plainText, "C:\\Users\\dani2\\eclipse-workspace\\springLog\\src\\main\\resources\\public.keystore");
-		String encryptedText = Base64.getEncoder().encodeToString(cipherTextArray);
-		System.out.println("Encrypted Text : " + encryptedText);
-
-		// Decryption
-		String decryptedText = decrypt(cipherTextArray, "C:\\Users\\dani2\\eclipse-workspace\\springLog\\src\\main\\resources\\private.keystore");
-		System.out.println("DeCrypted Text : " + decryptedText);
-
-	}*/
 	
+	/**
+	 * Constructor that gets plain texts and ciphers it using RSA
+	 * This method reads the keys stored in the private and public keystores
+	 * @param plainText
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 * @throws IOException
+	 */
 	public RsaUtil(String plainText) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
 		// Get an instance of the RSA key generator
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -60,7 +56,14 @@ public class RsaUtil {
 
 		System.out.println("Original Text  : " + plainText);
 	}
-
+	
+	/**
+	 * Saves the key to a file
+	 * @param fileName
+	 * @param modulus
+	 * @param exponent
+	 * @throws IOException
+	 */
 	public static void saveKeyToFile(String fileName, BigInteger modulus, BigInteger exponent) throws IOException {
 		ObjectOutputStream ObjOutputStream = new ObjectOutputStream(
 				new BufferedOutputStream(new FileOutputStream(fileName)));
@@ -73,7 +76,13 @@ public class RsaUtil {
 			ObjOutputStream.close();
 		}
 	}
-
+	
+	/**
+	 * Reads the different keys from file
+	 * @param keyFileName
+	 * @return Key
+	 * @throws IOException
+	 */
 	public static Key readKeyFromFile(String keyFileName) throws IOException {
 		Key key = null;
 		InputStream inputStream = new FileInputStream(keyFileName);
@@ -94,7 +103,14 @@ public class RsaUtil {
 		}
 		return key;
 	}
-
+	/**
+	 * Encrypts the plain text and returns a byte array that contains the result of
+	 * the RSA encryption
+	 * @param plainText
+	 * @param fileName
+	 * @return
+	 * @throws Exception
+	 */
 	public static byte[] encrypt(String plainText, String fileName) throws Exception {
 		Key publicKey = readKeyFromFile("public.key");
 
@@ -109,7 +125,13 @@ public class RsaUtil {
 
 		return cipherText;
 	}
-
+	/**
+	 * Decrypts the byte array using the private key, the method returns the original plain text
+	 * @param cipherTextArray
+	 * @param fileName
+	 * @return
+	 * @throws Exception
+	 */
 	public static String decrypt(byte[] cipherTextArray, String fileName) throws Exception {
 		Key privateKey = readKeyFromFile("private.key");
 

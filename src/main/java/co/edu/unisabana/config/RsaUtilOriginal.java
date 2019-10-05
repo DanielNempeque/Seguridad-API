@@ -18,6 +18,11 @@ import net.bytebuddy.asm.Advice.This;
 public class RsaUtilOriginal {
 	private static PublicKey publicKey;
 	private static PrivateKey privateKey;
+	/**
+	 * 
+	 * @param plainText
+	 * @throws Exception
+	 */
 	public RsaUtilOriginal(String plainText) throws Exception {
 		// Get an instance of the RSA key generator
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");

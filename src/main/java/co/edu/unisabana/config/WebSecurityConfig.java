@@ -30,38 +30,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private JwtRequestFilter jwtRequestFilter;
 
 	@Autowired
+	/**
+	 * Configures the Authentication manager in order to get the load path, it is used to match credentials
+	 * (Uses BicryptPasswordEncoder)
+	 * @param auth
+	 * @throws Exception
+	 */
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		// configure AuthenticationManager so that it knows from where to load
-		// user for matching credentials
-		// Use BCryptPasswordEncoder
 		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Bean
+	/**
+	 * Returns the BCryptPasswordEncoder
+	 * @return
+	 */
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
+	/**
+	 * Returns the AuthenticationManager instance
+	 */
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-
+	/**
+	 * Configures the HTTP communication security.
+	 * This method sets the service paths that don't need to be authenticated in order to access them,
+	 * also it makes sure to create stateless sessions and filter the token within every request 
+	 */
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		// We don't need CSRF for this example
 		httpSecurity.csrf().disable()
-				// dont authenticate this particular request
 				.authorizeRequests().antMatchers("/authenticate","/register","/pruebas").permitAll().
-				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
-				// make sure we use stateless session; session won't be used to
-				// store user's state.
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-		// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }

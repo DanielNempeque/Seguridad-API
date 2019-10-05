@@ -9,10 +9,18 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
  
 public class EncryptionSupport {
- 
+	/**
+	 * Instance of SecretKeySpec class in the Cripto library
+	 */
     private static SecretKeySpec secretKey;
+    /**
+     * Creation of a Byte array, stores the key for AES cipher
+     */
     private static byte[] key;
-
+    /**
+     * @param myKey
+     * Transforms the parameter myKey to byte array and stores it in the global variable
+     */
     public static void setKey(String myKey)
     {
         MessageDigest sha = null;
@@ -30,7 +38,11 @@ public class EncryptionSupport {
             e.printStackTrace();
         }
     }
- 
+    /**
+     * @param strToEncrypt Plain text that will be encrypted
+     * @param secret Sets a key to cipher
+     * @return Contains the String result of the encryption with AES
+     */
     public static String encrypt(String strToEncrypt, String secret)
     {
         try
@@ -46,7 +58,11 @@ public class EncryptionSupport {
         }
         return null;
     }
- 
+    /**
+     * @param strToDecrypt Plain text that will be decrypted in the method
+     * @param secret Sets a key to decrypt
+     * @return plain text before the encryption
+     */
     public static String decrypt(String strToDecrypt, String secret)
     {
         try
