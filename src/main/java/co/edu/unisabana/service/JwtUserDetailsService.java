@@ -9,19 +9,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import co.edu.unisabana.dao.UserDao;
+import co.edu.unisabana.dao.IUser;
 import co.edu.unisabana.model.DAOUser;
 import co.edu.unisabana.model.UserDTO;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 	@Autowired
-	private UserDao userDao;
+	private IUser userDao;
 
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
+
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		DAOUser user = userDao.findByUsername(username);
 		if (user == null) {

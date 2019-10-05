@@ -8,7 +8,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
  
-public class EncryptionSupport {
+public class EncryptionAES {
  
     private static SecretKeySpec secretKey;
     private static byte[] key;

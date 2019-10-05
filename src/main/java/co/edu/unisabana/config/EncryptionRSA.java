@@ -23,7 +23,7 @@ import java.util.Base64;
 
 import javax.crypto.Cipher;
 
-public class RsaUtil {	
+public class EncryptionRSA {	
 	/*public static void main(String[] args) throws Exception {
 		this.RsaUtil(plainText);
 		// Encryption
@@ -36,8 +36,14 @@ public class RsaUtil {
 		System.out.println("DeCrypted Text : " + decryptedText);
 
 	}*/
-	
-	public RsaUtil(String plainText) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+	/**
+	 * 
+	 * @param plainText
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 * @throws IOException
+	 */
+	public EncryptionRSA(String plainText) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
 		// Get an instance of the RSA key generator
 		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
 		keyPairGenerator.initialize(4096);
@@ -60,20 +66,31 @@ public class RsaUtil {
 
 		System.out.println("Original Text  : " + plainText);
 	}
-
-	public static void saveKeyToFile(String fileName, BigInteger modulus, BigInteger exponent) throws IOException {
+/**
+ * Genera las key publica y privada 
+ * @param fileName nombre del archivo que donde se va a guardar la key
+ * @param n modulo a el cual se le va a aplicar la funcion de RSA
+ * @param potencia Potencia a la cual se elevara y posteriormente aplicar el modulo
+ * @throws IOException
+ */
+	public static void saveKeyToFile(String fileName, BigInteger n, BigInteger potencia) throws IOException {
 		ObjectOutputStream ObjOutputStream = new ObjectOutputStream(
 				new BufferedOutputStream(new FileOutputStream(fileName)));
 		try {
-			ObjOutputStream.writeObject(modulus);
-			ObjOutputStream.writeObject(exponent);
+			ObjOutputStream.writeObject(n);
+			ObjOutputStream.writeObject(potencia);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			ObjOutputStream.close();
 		}
 	}
-
+/**
+ * Lee el archivo de keystore para recuperar la key (publica o privada)
+ * @param keyFileName nombre del archivo de la key
+ * @return key retorna la key obtenida de el archivo keystore
+ * @throws IOException
+ */
 	public static Key readKeyFromFile(String keyFileName) throws IOException {
 		Key key = null;
 		InputStream inputStream = new FileInputStream(keyFileName);
@@ -94,33 +111,45 @@ public class RsaUtil {
 		}
 		return key;
 	}
-
-	public static byte[] encrypt(String plainText, String fileName) throws Exception {
+/**
+ * Encripcion usando RSA modo cifrador de bloques ECB
+ * @param txt Texto plano a cifrar
+ * @param fileKey nombre del archivo de la key formato keystore
+ * @return cipherText texto cifrado usando RSA
+ * @throws Exception
+ */
+	public static byte[] encrypt(String txt, String fileKey) throws Exception {
 		Key publicKey = readKeyFromFile("public.key");
 
-		// Get Cipher Instance
+		// Modo de cifrado RSA ECB
 		Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
 
-		// Initialize Cipher for ENCRYPT_MODE
+		// Inicializar en modo encripcion con la clave
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 
-		// Perform Encryption
-		byte[] cipherText = cipher.doFinal(plainText.getBytes());
+		// Encriptar usando RSA y la key
+		byte[] cipherText = cipher.doFinal(txt.getBytes());
 
 		return cipherText;
 	}
-
-	public static String decrypt(byte[] cipherTextArray, String fileName) throws Exception {
+/**
+ * Descifrado usando RSA modo cifrador de bloques ECB
+ * @param cipheredTxt
+ * @param fileKey
+ * @return
+ * @throws Exception
+ */
+	public static String decrypt(byte[] cipheredTxt, String fileKey) throws Exception {
 		Key privateKey = readKeyFromFile("private.key");
 
-		// Get Cipher Instance
+		// Modo de cifrado RSA ECB
 		Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-512ANDMGF1PADDING");
 
-		// Initialize Cipher for DECRYPT_MODE
+		// Inicializar en modo encripcion con la clave
 		cipher.init(Cipher.DECRYPT_MODE, privateKey);
 
 		// Perform Decryption
-		byte[] decryptedTextArray = cipher.doFinal(cipherTextArray);
+		byte[] decryptedTextArray = cipher.doFinal(cipheredTxt);
 
 		return new String(decryptedTextArray);
 	}
