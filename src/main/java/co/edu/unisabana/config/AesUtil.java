@@ -10,7 +10,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-public interface IAES {
+public interface AesUtil {
 	public byte[] encrypt(byte[] b);
 
 	public byte[] decrypt(byte[] b) throws BadPaddingException;

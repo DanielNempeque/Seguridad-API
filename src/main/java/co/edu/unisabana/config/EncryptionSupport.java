@@ -7,16 +7,11 @@ import java.util.Arrays;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
- 
-<<<<<<< HEAD:src/main/java/co/edu/unisabana/config/EncryptionSupport.java
+
 public class EncryptionSupport {
 	/**
 	 * Instance of SecretKeySpec class in the Cripto library
 	 */
-=======
-public class EncryptionAES {
- 
->>>>>>> 7028148bd51d835dad45e51e7c2c58c594cab9c0:src/main/java/co/edu/unisabana/config/EncryptionAES.java
     private static SecretKeySpec secretKey;
     /**
      * Creation of a Byte array, stores the key for AES cipher
