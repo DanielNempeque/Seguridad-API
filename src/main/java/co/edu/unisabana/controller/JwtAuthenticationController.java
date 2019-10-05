@@ -53,7 +53,8 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 	/**
-	 * 
+	 * Gets the POST requests in the /register service.
+	 * This method comunicates with the user DAO in order to create a reg in the database
 	 * @param user
 	 * @return
 	 * @throws Exception
@@ -63,7 +64,8 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 	/**
-	 * 
+	 * Checks if a given username and password matches an user in the database, and if true, it authenticates
+	 * and returns the unique Token
 	 * @param username
 	 * @param password
 	 * @throws Exception
