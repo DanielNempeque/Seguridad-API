@@ -6,17 +6,17 @@ import javax.crypto.BadPaddingException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unisabana.config.RsaUtil;
+import co.edu.unisabana.config.EncryptionRSA;
 
 @RestController
 public class pruebas {
 	
-	private RsaUtil rsa;
+	private EncryptionRSA rsa;
 	static String plainText = "La vida es un ciclo...";
 	
 	@RequestMapping("/pruebas")
 	public String cifrado() throws Exception {
-		rsa = new RsaUtil(plainText);
+		rsa = new EncryptionRSA(plainText);
 		// Encryption
 		byte[] cipherTextArray = rsa.encrypt(plainText, "C:\\Users\\dani2\\eclipse-workspace\\springLog\\src\\main\\resources\\public.keystore");
 		String encryptedText = Base64.getEncoder().encodeToString(cipherTextArray);
